@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pricing</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <style>
+        .container {
+            margin-top: 250px;
+            margin-bottom: 50px; /* Add margin at the bottom for spacing */
+        }
+        .pricing-table {
+            margin-bottom: 100px; /* Add margin between tables */
+        }
+        h2{
+          text-align:center;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0px 100px">
+    {% for category, items in items_by_category.items() %}
+    <div class="pricing-table">
+        <h2>{{ category }}</h2>
+        <table id="table_{{ loop.index }}" class="display">
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Action</th> <!-- Add a new column for the Add to Cart button -->
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td><button onclick="addToCart('{{ item[2] }}', '{{ item[3] }}')">Add to Cart</button></td> <!-- Add to Cart button -->
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+<script>
+    // Make sure to wait for the document to be ready before initializing DataTable
+    $(document).ready(function () {
+        {% for category, items in items_by_category.items() %}
+        $("#table_{{ loop.index }}").DataTable();
+        {% endfor %}
+    });
+
+    // Function to handle adding items to the cart
+    function addToCart(itemName, itemPrice) {
+        // You can implement your logic here to add the item to the cart
+        // For demonstration purposes, let's just alert the item name and price
+        alert("Added to Cart: " + itemName + " - " + itemPrice);
+    }
+</script>
+</body>
+</html>
+{% endblock %}
